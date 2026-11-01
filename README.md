@@ -52,3 +52,18 @@ python sensor_producer.py      # термінал 2 — датчик №2
 python alerts_streaming.py     # термінал 3 — Spark Streaming
 python alerts_consumer.py      # термінал 4 — перевірка вихідного топіка
 ```
+
+## Скриншоти
+
+### Створення топіків
+![topics](screenshots/p0_topics.png)
+
+### 1. Генерація даних: два датчики працюють одночасно (ID 5757 і 1799)
+![sensors](screenshots/p1_two_sensors.png)
+
+### 2. Spark Streaming: середні значення у вікні та знайдений алерт
+![spark](screenshots/p2_spark_alerts.png)
+
+### 3. Відфільтровані алерти записані у вихідний топік
+Зліва Spark Streaming, справа повідомлення, прочитані з `polina_krashchenko_avg_alerts`.
+![kafka](screenshots/p3_alerts_in_kafka.png)
