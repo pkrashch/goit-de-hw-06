@@ -19,6 +19,7 @@ SLIDING_INTERVAL = "30 seconds"
 WATERMARK_DELAY = "10 seconds"
 CONDITIONS_FILE = "alerts_conditions.csv"
 CHECKPOINT_DIR = "checkpoints/avg_alerts"
+TRIGGER_INTERVAL = "10 seconds"
 
 # Пакет для роботи Spark із Kafka (версія збігається з встановленим pyspark)
 KAFKA_PACKAGE = f"org.apache.spark:spark-sql-kafka-0-10_2.13:{pyspark.__version__}"
@@ -109,12 +110,14 @@ kafka_query = (alerts_df
                .option("topic", TOPIC_AVG_ALERTS)
                .option("checkpointLocation", CHECKPOINT_DIR)
                .outputMode("update")
+               .trigger(processingTime=TRIGGER_INTERVAL)
                .start())
 
 console_query = (alerts_df.writeStream
                  .format("console")
                  .option("truncate", "false")
                  .outputMode("update")
+                 .trigger(processingTime=TRIGGER_INTERVAL)
                  .start())
 
 print(f"Streaming from '{TOPIC_SENSORS}' to '{TOPIC_AVG_ALERTS}'. Stop with Ctrl+C.")
