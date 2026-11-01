@@ -5,6 +5,7 @@
 """
 import json
 import random
+import sys
 import time
 from datetime import datetime
 
@@ -12,7 +13,8 @@ from kafka import KafkaProducer
 
 from configs import TOPIC_SENSORS, connection_params
 
-SEND_INTERVAL_SEC = 2
+# Інтервал відправки в секундах (можна передати аргументом: python sensor_producer.py 10)
+SEND_INTERVAL_SEC = float(sys.argv[1]) if len(sys.argv) > 1 else 2
 
 # ID датчика — випадкове, але постійне в межах одного запуску
 sensor_id = random.randint(1000, 9999)
@@ -23,7 +25,7 @@ producer = KafkaProducer(
     key_serializer=lambda v: str(v).encode("utf-8"),
 )
 
-print(f"Sensor {sensor_id} started. Sending data to '{TOPIC_SENSORS}'...")
+print(f"Sensor {sensor_id} started. Sending data to '{TOPIC_SENSORS}' every {SEND_INTERVAL_SEC} s...")
 
 try:
     while True:
